@@ -32,9 +32,9 @@ class PostSerializer(serializers.ModelSerializer):
     #     queryset=Group.objects.all(),
     #     required=False
     # )
-    comments = CommentSerializer(many=True, required=False)
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    # comments = CommentSerializer(many=True, required=False)
+    author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Post
-        fields = ('text', 'author', 'pub_date', 'image', 'group', 'comments')
+        fields = ('text', 'author', 'pub_date', 'image', 'group')
