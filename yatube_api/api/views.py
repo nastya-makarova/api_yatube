@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
 
 from posts.models import Comment, Group, Post, User
@@ -21,8 +21,10 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         instance = serializer.instance
+
         if instance.author != self.request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            raise PermissionDenied
+
         serializer.save()
 
 
