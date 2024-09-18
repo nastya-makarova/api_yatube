@@ -19,11 +19,11 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = serializers.StringRelatedField()
 
     class Meta:
         model = Comment
-        fields = ('author', 'post', 'created', 'text')
+        fields = ('id', 'author', 'post', 'created', 'text')
         read_only_fields = ['author', 'post']
 
 

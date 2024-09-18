@@ -52,3 +52,19 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs['post_id']
         post = get_object_or_404(Post, pk=post_id)
         serializer.save(author=self.request.user, post=post)
+
+    def perform_update(self, serializer):
+        instance = serializer.instance
+
+        if instance.author != self.request.user:
+            raise PermissionDenied
+
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.author != self.request.user:
+            raise PermissionDenied
+        instance.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
