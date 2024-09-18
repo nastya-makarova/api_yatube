@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from posts.models import Comment, Group, Post, User
+from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,4 +31,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('text', 'author', 'pub_date', 'image', 'group')
+        fields = ('id', 'text', 'author', 'pub_date', 'image', 'group')
