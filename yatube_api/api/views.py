@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
 
@@ -27,6 +28,13 @@ class PostViewSet(viewsets.ModelViewSet):
 
         serializer.save()
 
+    def perform_destroy(self, instance):
+        if instance.author != self.request.user:
+            raise PermissionDenied
+        instance.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
@@ -39,6 +47,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         post_id = self.kwargs['post_id']
         return Comment.objects.filter(post_id=post_id)
-    
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
