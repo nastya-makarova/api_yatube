@@ -15,7 +15,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ('title', 'slug', 'description')
+        fields = ('id', 'title', 'slug', 'description')
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -24,15 +24,10 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('author', 'post', 'created', 'text')
+        read_only_fields = ['author', 'post']
 
 
 class PostSerializer(serializers.ModelSerializer):
-    # group = serializers.SlugRelatedField(
-    #     slug_field='slug',
-    #     queryset=Group.objects.all(),
-    #     required=False
-    # )
-    # comments = CommentSerializer(many=True, required=False)
     author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
